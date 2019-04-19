@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "791611492750",
+    "firebase_url": "https://attendance-taker-bf75d.firebaseio.com",
+    "project_id": "attendance-taker-bf75d",
+    "storage_bucket": "attendance-taker-bf75d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791611492750:android:c295ed55b934966c",
+        "android_client_info": {
+          "package_name": "edu.uga.cs.attendancetaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791611492750-d5obt37shcccfai91gm85t1h3681oqjs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD91go_OWZ26XlrfU7vB8ytqfeCuDtWRzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791611492750-d5obt37shcccfai91gm85t1h3681oqjs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
