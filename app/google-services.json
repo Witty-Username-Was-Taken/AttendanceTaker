@@ -8,14 +8,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:791611492750:android:c295ed55b934966c",
+        "mobilesdk_app_id": "1:791611492750:android:87fcb66cc6ca320a",
         "android_client_info": {
-          "package_name": "edu.uga.cs.attendancetaker"
+          "package_name": "com.google.firebase.quickstart.auth"
         }
       },
       "oauth_client": [
         {
-          "client_id": "791611492750-d5obt37shcccfai91gm85t1h3681oqjs.apps.googleusercontent.com",
+          "client_id": "791611492750-kgb5elvfdehtkpnia29df0hapfbqllrl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.google.firebase.quickstart.auth",
+            "certificate_hash": "57c2843ad9047e24f0fa4b258983526c3a289352"
+          }
+        },
+        {
+          "client_id": "791611492750-d0n4klr1gokjque2vu5encn5uotg13lo.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -28,7 +36,44 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "791611492750-d5obt37shcccfai91gm85t1h3681oqjs.apps.googleusercontent.com",
+              "client_id": "791611492750-d0n4klr1gokjque2vu5encn5uotg13lo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:791611492750:android:c295ed55b934966c",
+        "android_client_info": {
+          "package_name": "edu.uga.cs.attendancetaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "791611492750-9ick12lj0h53otntsktfciku3ur672mm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.uga.cs.attendancetaker",
+            "certificate_hash": "57c2843ad9047e24f0fa4b258983526c3a289352"
+          }
+        },
+        {
+          "client_id": "791611492750-d0n4klr1gokjque2vu5encn5uotg13lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD91go_OWZ26XlrfU7vB8ytqfeCuDtWRzY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "791611492750-d0n4klr1gokjque2vu5encn5uotg13lo.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
