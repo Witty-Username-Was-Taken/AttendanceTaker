@@ -9,15 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ProfessorMainScreenActivity"></activity>
-        <activity android:name=".StudentMainScreenActivity" />
-        <activity android:name=".SplashScreenActivity">
+        <activity
+            android:name=".SplashScreenActivity"
+            android:theme="@style/HiddenTitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ProfessorMainScreenActivity"
+            android:parentActivityName=".SplashScreenActivity"
+            android:theme="@style/HiddenTitleTheme"/>
+        <activity
+            android:name=".StudentMainScreenActivity"
+            android:parentActivityName=".SplashScreenActivity"
+            android:theme="@style/HiddenTitleTheme"/>
     </application>
 
 </manifest>
