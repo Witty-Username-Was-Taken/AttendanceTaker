@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">AttendanceTaker</string>
-    <string name="successful_login">You have been successfully added to the AttendanceTaker Firebase!</string>
+    <string name="successful_student_login">STUDENT is now connected to the Firebase.</string>
+    <string name="successful_professor_login">PROFESSOR is now connected to the Firebase.</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+    <string-array name="professor_emails">
+        <item>siraaj.fadoo@gmail.com</item>
+    </string-array>
 </resources>

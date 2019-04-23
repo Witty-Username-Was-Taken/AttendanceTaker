@@ -14,7 +14,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class MainScreenActivity extends AppCompatActivity {
+public class StudentMainScreenActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
@@ -25,10 +25,10 @@ public class MainScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.activity_student_main_screen);
 
-        signOut = findViewById(R.id.sign_out_button);
-        disconnect = findViewById(R.id.disconnect_button);
+        signOut = findViewById(R.id.student_sign_out_button);
+        disconnect = findViewById(R.id.student_disconnect_button);
 
         signOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -63,7 +63,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(MainScreenActivity.this, SplashScreenActivity.class);
+                        Intent intent = new Intent(StudentMainScreenActivity.this, SplashScreenActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -78,7 +78,7 @@ public class MainScreenActivity extends AppCompatActivity {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(MainScreenActivity.this, SplashScreenActivity.class);
+                        Intent intent = new Intent(StudentMainScreenActivity.this, SplashScreenActivity.class);
                         startActivity(intent);
                     }
                 });

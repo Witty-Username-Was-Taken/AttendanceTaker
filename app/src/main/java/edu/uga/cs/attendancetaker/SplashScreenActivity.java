@@ -113,9 +113,21 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void updateUI(FirebaseUser user) {
+        boolean isProfessor = false;
+        String[] professor_emails = getResources().getStringArray(R.array.professor_emails);
         if (user != null) {
-            Intent intent = new Intent(this, MainScreenActivity.class);
-            startActivity(intent);
+            for(String email : professor_emails) {
+                if(user.getEmail().equals(email)) {
+                    isProfessor = true;
+                }
+            }
+            if(isProfessor) {
+                Intent intent = new Intent(this, ProfessorMainScreenActivity.class);
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, StudentMainScreenActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
