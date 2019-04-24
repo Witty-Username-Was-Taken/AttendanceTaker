@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">AttendanceTaker</string>
-    <string name="successful_student_login">STUDENT is now connected to the Firebase.</string>
-    <string name="successful_professor_login">PROFESSOR is now connected to the Firebase.</string>
+    <string name="app_description">say goodbye to calling role</string>
+    <string name="view_attendance">View Attendance</string>
+    <string name="scan_barcode">Scan Barcode</string>
+    <string name="new_barcode">New Barcode</string>
+    <string name="current_barcodes">Current Barcodes</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
     <string-array name="professor_emails">

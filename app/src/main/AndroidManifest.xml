@@ -26,6 +26,10 @@
             android:name=".StudentMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
             android:theme="@style/HiddenTitleTheme"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
