@@ -12,6 +12,7 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/HiddenTitleTheme">
@@ -29,8 +30,14 @@
             android:name=".StudentMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
             android:theme="@style/HiddenTitleTheme" />
-        <activity android:name=".CourseInfoActivity"
+        <activity
+            android:name=".CourseInfoActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:theme="@style/HiddenTitleTheme"/>
+            android:theme="@style/HiddenTitleTheme" />
+        <activity
+            android:name=".NewBarcodeActivity"
+            android:parentActivityName=".CourseInfoActivity"
+            android:theme="@style/HiddenTitleTheme" />
     </application>
+
 </manifest>

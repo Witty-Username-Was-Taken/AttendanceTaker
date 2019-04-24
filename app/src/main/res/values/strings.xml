@@ -16,5 +16,5 @@
     <string name="subject_hint">Subject</string>
     <string name="crn_hint">CRN</string>
     <string name="class_name_hint">Class Name</string>
-    <string name="add_new_course">Add New Course</string>
+    <string name="add_new_barcode">Add New Barcode</string>
 </resources>

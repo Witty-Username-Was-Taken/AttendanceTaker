@@ -11,7 +11,7 @@
         android:id="@+id/subject_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="136dp"
+        android:layout_marginTop="60dp"
         android:text="@string/subject"
         android:textColor="@android:color/white"
         android:textSize="30sp"
@@ -51,9 +51,9 @@
 
     <EditText
         android:id="@+id/subject_edit_text"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="72dp"
         android:background="@drawable/textinputborder"
         android:ems="10"
         android:hint="@string/subject_hint"
@@ -68,7 +68,7 @@
 
     <EditText
         android:id="@+id/class_name_edit_text"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="84dp"
         android:background="@drawable/textinputborder"
@@ -85,7 +85,7 @@
 
     <EditText
         android:id="@+id/crn_edit_text"
-        android:layout_width="160dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
         android:background="@drawable/textinputborder"
@@ -101,7 +101,7 @@
         tools:targetApi="o" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/course_info_new_barcode_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -110,13 +110,13 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/add_new_course"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="@string/add_new_barcode"
+        app:layout_constraintBottom_toBottomOf="@+id/course_info_sign_out_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.81"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/class_name_textview"
-        app:layout_constraintVertical_bias="0.408" />
+        app:layout_constraintTop_toTopOf="@+id/course_info_sign_out_button"
+        app:layout_constraintVertical_bias="0.416" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
@@ -125,4 +125,20 @@
         android:orientation="horizontal"
         android:visibility="gone"
         app:layout_constraintGuide_begin="20dp" />
+
+    <Button
+        android:id="@+id/course_info_sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/sign_out"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/course_info_new_barcode_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/class_name_textview" />
 </android.support.constraint.ConstraintLayout>
