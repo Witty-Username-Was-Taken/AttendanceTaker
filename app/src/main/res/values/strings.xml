@@ -4,10 +4,17 @@
     <string name="view_attendance">View Attendance</string>
     <string name="scan_barcode">Scan Barcode</string>
     <string name="new_barcode">New Barcode</string>
-    <string name="current_barcodes">Current Barcodes</string>
+    <string name="current_barcodes">Current Barcode</string>
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
     <string-array name="professor_emails">
         <item>siraaj.fadoo@gmail.com</item>
     </string-array>
+    <string name="subject">Subject:</string>
+    <string name="crn">CRN:</string>
+    <string name="class_name">Class Name:</string>
+    <string name="subject_hint">Subject</string>
+    <string name="crn_hint">CRN</string>
+    <string name="class_name_hint">Class Name</string>
+    <string name="add_new_course">Add New Course</string>
 </resources>

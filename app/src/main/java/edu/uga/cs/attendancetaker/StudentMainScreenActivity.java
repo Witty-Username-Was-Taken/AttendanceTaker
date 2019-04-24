@@ -20,7 +20,6 @@ public class StudentMainScreenActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     Button signOut;
-    Button disconnect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +27,10 @@ public class StudentMainScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_main_screen);
 
         signOut = findViewById(R.id.student_sign_out_button);
-        disconnect = findViewById(R.id.student_disconnect_button);
 
         signOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 signOut();
-            }
-        });
-
-        disconnect.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                revokeAccess();
             }
         });
 
@@ -60,21 +52,6 @@ public class StudentMainScreenActivity extends AppCompatActivity {
 
         // Google sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(StudentMainScreenActivity.this, SplashScreenActivity.class);
-                        startActivity(intent);
-                    }
-                });
-    }
-
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

@@ -20,7 +20,7 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
     private GoogleSignInClient mGoogleSignInClient;
 
     Button signOut;
-    Button disconnect;
+    Button newBarcode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_professor_main_screen);
 
         signOut = findViewById(R.id.professor_sign_out_button);
-        disconnect = findViewById(R.id.professor_disconnect_button);
+        newBarcode = findViewById(R.id.professor_new_barcode_button);
 
         signOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -36,11 +36,13 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
             }
         });
 
-        disconnect.setOnClickListener(new View.OnClickListener() {
+        newBarcode.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                revokeAccess();
+                Intent intent = new Intent(ProfessorMainScreenActivity.this, CourseInfoActivity.class);
+                startActivity(intent);
             }
         });
+
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -60,21 +62,6 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
 
         // Google sign out
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(ProfessorMainScreenActivity.this, SplashScreenActivity.class);
-                        startActivity(intent);
-                    }
-                });
-    }
-
-    private void revokeAccess() {
-        // Firebase sign out
-        mAuth.signOut();
-
-        // Google revoke access
-        mGoogleSignInClient.revokeAccess().addOnCompleteListener(this,
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

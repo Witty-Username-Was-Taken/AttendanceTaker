@@ -9,6 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
         <activity
             android:name=".SplashScreenActivity"
             android:theme="@style/HiddenTitleTheme">
@@ -21,15 +24,13 @@
         <activity
             android:name=".ProfessorMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme"/>
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".StudentMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
+            android:theme="@style/HiddenTitleTheme" />
+        <activity android:name=".CourseInfoActivity"
+            android:parentActivityName=".ProfessorMainScreenActivity"
             android:theme="@style/HiddenTitleTheme"/>
-
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
     </application>
-
 </manifest>
