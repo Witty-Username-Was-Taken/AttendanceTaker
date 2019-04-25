@@ -41,9 +41,9 @@ public class CourseInfoActivity extends AppCompatActivity {
         newBarcode.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(CourseInfoActivity.this, NewBarcodeActivity.class);
-                intent.putExtra("subject", subject.getText());
-                intent.putExtra("crn", crn.getText());
-                intent.putExtra("className", className.getText());
+                intent.putExtra("subject", subject.getText().toString());
+                intent.putExtra("crn", crn.getText().toString());
+                intent.putExtra("className", className.getText().toString());
                 startActivity(intent);
             }
         });
