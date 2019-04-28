@@ -46,7 +46,7 @@ public class NewBarcodeActivity extends AppCompatActivity {
         crn = getIntent().getStringExtra("crn");
         className = getIntent().getStringExtra("className");
 
-        String text = subject + " | " + crn + " | " + className;
+        String text = subject + "\n" + crn + "\n" + className;
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
             BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,800,800);
