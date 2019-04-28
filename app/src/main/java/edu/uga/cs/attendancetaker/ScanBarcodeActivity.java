@@ -97,6 +97,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                 });
     }
 
-    
+
 
 }
