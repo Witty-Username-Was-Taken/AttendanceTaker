@@ -19,27 +19,36 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    Button signOut;
     Button newBarcode;
+    Button currentBarcodes;
+    Button signOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_professor_main_screen);
 
-        signOut = findViewById(R.id.professor_sign_out_button);
         newBarcode = findViewById(R.id.professor_new_barcode_button);
-
-        signOut.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                signOut();
-            }
-        });
+        currentBarcodes = findViewById(R.id.professor_current_barcodes_button);
+        signOut = findViewById(R.id.professor_sign_out_button);
 
         newBarcode.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ProfessorMainScreenActivity.this, CourseInfoActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        currentBarcodes.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfessorMainScreenActivity.this, CurrentBarcodesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                signOut();
             }
         });
 

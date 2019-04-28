@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -37,6 +38,10 @@
         <activity
             android:name=".NewBarcodeActivity"
             android:parentActivityName=".CourseInfoActivity"
+            android:theme="@style/HiddenTitleTheme" />
+        <activity
+            android:name=".CurrentBarcodesActivity"
+            android:parentActivityName=".ProfessorMainScreenActivity"
             android:theme="@style/HiddenTitleTheme" />
     </application>
 

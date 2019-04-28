@@ -33,11 +33,11 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
-    private boolean duplicate;
 
     private FirebaseAuth mAuth;
-
+    private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
+    private DocumentReference docIdRef;
 
     SignInButton signInButton;
 
@@ -141,6 +141,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     private void addUserToDatabase(FirebaseUser user) {
+        firebaseUser = user;
         boolean isProfessor = false;
         String[] professor_emails = getResources().getStringArray(R.array.professor_emails);
         if (user != null) {
@@ -153,11 +154,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
             if(isProfessor) {
-                duplicate = false;
-                Map<String, Object> docData = new HashMap<>();
-                docData.put("name", user.getDisplayName());
-
-                DocumentReference docIdRef = db.collection("professors").document(user.getUid());
+                docIdRef = db.collection("professors").document(user.getUid());
                 docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -165,38 +162,33 @@ public class SplashScreenActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
-                                duplicate = true;
                             } else {
                                 Log.d(TAG, "Document does not exist!");
+                                Map<String, Object> docData = new HashMap<>();
+                                docData.put("name", firebaseUser.getDisplayName());
+                                docIdRef.set(docData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+
                             }
                         } else {
                             Log.d(TAG, "Failed with: ", task.getException());
                         }
                     }
                 });
-
-                if(!duplicate) {
-                    docIdRef.set(docData)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error writing document", e);
-                                }
-                            });
-                }
 
             } else {
-                duplicate = false;
-                Map<String, Object> docData = new HashMap<>();
-                docData.put("name", user.getDisplayName());
-
-                DocumentReference docIdRef = db.collection("students").document(user.getUid());
+                docIdRef = db.collection("students").document(user.getUid());
                 docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -204,32 +196,32 @@ public class SplashScreenActivity extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 Log.d(TAG, "Document exists!");
-                                duplicate = true;
                             } else {
                                 Log.d(TAG, "Document does not exist!");
+                                Map<String, Object> docData = new HashMap<>();
+                                docData.put("name", firebaseUser.getDisplayName());
+                                docIdRef.set(docData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+
                             }
                         } else {
                             Log.d(TAG, "Failed with: ", task.getException());
                         }
                     }
                 });
-
-                if(!duplicate) {
-                    docIdRef.set(docData)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d(TAG, "DocumentSnapshot successfully written!");
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error writing document", e);
-                                }
-                            });
-                }
             }
+
         }
     }
 

@@ -32,6 +32,7 @@ public class NewBarcodeActivity extends AppCompatActivity {
 
     ImageView qrCodeImageView;
 
+    Button home;
     Button signOut;
 
     @Override
@@ -40,10 +41,11 @@ public class NewBarcodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_barcode);
 
         qrCodeImageView = findViewById(R.id.qrCodeImageView);
+        home = findViewById(R.id.new_barcode_home_button);
         signOut = findViewById(R.id.new_barcode_sign_out_button);
 
         subject = getIntent().getStringExtra("subject");
-        crn = getIntent().getStringExtra("crn");
+        crn = getIntent().getStringExtra("selectedCrn");
         className = getIntent().getStringExtra("className");
 
         String text = subject + "\n" + crn + "\n" + className;
@@ -56,6 +58,13 @@ public class NewBarcodeActivity extends AppCompatActivity {
         } catch (WriterException e) {
             e.printStackTrace();
         }
+
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(NewBarcodeActivity.this, ProfessorMainScreenActivity.class);
+                startActivity(intent);
+            }
+        });
 
         signOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

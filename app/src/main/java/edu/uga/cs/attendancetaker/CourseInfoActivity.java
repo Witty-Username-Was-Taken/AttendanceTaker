@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,10 +28,10 @@ import java.util.Map;
 public class CourseInfoActivity extends AppCompatActivity {
 
     private static final String TAG = "GoogleActivity";
+
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
-
-    private boolean duplicate;
+    private DocumentReference docIdRef;
 
     EditText subject;
     EditText crn;
@@ -57,7 +58,7 @@ public class CourseInfoActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(CourseInfoActivity.this, NewBarcodeActivity.class);
                 intent.putExtra("subject", subject.getText().toString());
-                intent.putExtra("crn", crn.getText().toString());
+                intent.putExtra("selectedCrn", crn.getText().toString());
                 intent.putExtra("className", className.getText().toString());
                 startActivity(intent);
             }
@@ -96,16 +97,11 @@ public class CourseInfoActivity extends AppCompatActivity {
                 });
     }
 
-    private void addClassToDatabase(String subject, String crn, String className) {
+    private void addClassToDatabase(final String subject, String crn, final String className) {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        duplicate = false;
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("subject", subject);
-        docData.put("className", className);
-
-        DocumentReference docIdRef = db.collection("classes").document(crn);
+        docIdRef = db.collection("classes").document(crn);
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -113,31 +109,31 @@ public class CourseInfoActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "Document exists!");
-                        duplicate = true;
                     } else {
                         Log.d(TAG, "Document does not exist!");
+                        Map<String, Object> docData = new HashMap<>();
+                        docData.put("subject", subject);
+                        docData.put("className", className);
+                        docIdRef.set(docData)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
+
                     }
                 } else {
                     Log.d(TAG, "Failed with: ", task.getException());
                 }
             }
         });
-
-        if(!duplicate) {
-            docIdRef.set(docData)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            Log.d(TAG, "DocumentSnapshot successfully written!");
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.w(TAG, "Error writing document", e);
-                        }
-                    });
-        }
     }
 
 }
