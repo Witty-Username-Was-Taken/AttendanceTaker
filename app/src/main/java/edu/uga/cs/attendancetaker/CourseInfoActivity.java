@@ -58,9 +58,7 @@ public class CourseInfoActivity extends AppCompatActivity {
                         className.getText().toString());
 
                 Intent intent = new Intent(CourseInfoActivity.this, NewBarcodeActivity.class);
-                intent.putExtra("subject", subject.getText().toString());
                 intent.putExtra("selectedCrn", crn.getText().toString());
-                intent.putExtra("className", className.getText().toString());
                 startActivity(intent);
             }
         });
@@ -117,7 +115,7 @@ public class CourseInfoActivity extends AppCompatActivity {
                         Map<String, Object> docData = new HashMap<>();
                         docData.put("subject", subject);
                         docData.put("className", className);
-                        docData.put("professor", firebaseUser.getDisplayName());
+                        docData.put("professor", firebaseUser.getUid());
                         docIdRef.set(docData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

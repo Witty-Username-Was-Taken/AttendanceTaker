@@ -26,9 +26,7 @@ public class NewBarcodeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private String subject;
     private String crn;
-    private String className;
 
     ImageView qrCodeImageView;
 
@@ -44,14 +42,11 @@ public class NewBarcodeActivity extends AppCompatActivity {
         home = findViewById(R.id.new_barcode_home_button);
         signOut = findViewById(R.id.new_barcode_sign_out_button);
 
-        subject = getIntent().getStringExtra("subject");
         crn = getIntent().getStringExtra("selectedCrn");
-        className = getIntent().getStringExtra("className");
 
-        String text = subject + "\n" + crn + "\n" + className;
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,800,800);
+            BitMatrix bitMatrix = multiFormatWriter.encode(crn, BarcodeFormat.QR_CODE,800,800);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             qrCodeImageView.setImageBitmap(bitmap);
