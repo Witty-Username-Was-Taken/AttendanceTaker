@@ -30,6 +30,7 @@ public class CourseInfoActivity extends AppCompatActivity {
     private static final String TAG = "GoogleActivity";
 
     private FirebaseAuth mAuth;
+    private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
     private DocumentReference docIdRef;
 
@@ -101,6 +102,8 @@ public class CourseInfoActivity extends AppCompatActivity {
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        firebaseUser = mAuth.getCurrentUser();
+
         docIdRef = db.collection("classes").document(crn);
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -114,6 +117,7 @@ public class CourseInfoActivity extends AppCompatActivity {
                         Map<String, Object> docData = new HashMap<>();
                         docData.put("subject", subject);
                         docData.put("className", className);
+                        docData.put("professor", firebaseUser.getDisplayName());
                         docIdRef.set(docData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
