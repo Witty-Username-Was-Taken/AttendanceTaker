@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -102,9 +103,11 @@ public class ScanBarcodeActivity extends AppCompatActivity {
     }
 
     private void addAttendanceRecordToDatabase(String crn) {
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy hh:mm a");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy"); // Was MM/dd/yyyy hh:mm a
+        DateFormat dateFormat1 = new SimpleDateFormat("MM-dd-yyyy");
         Date d = new Date();
         String date = dateFormat.format(d);
+        String date1 = dateFormat1.format(d);
 
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -114,10 +117,10 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         Map<String, Object> docData = new HashMap<>();
         docData.put("crn", crn);
         docData.put("student", firebaseUser.getUid());
-        docData.put("date", date);
+        docData.put(date, "present"); // Was "date", date
 
 
-        DocumentReference docIdRef = db.collection("attendanceRecords").document();
+        DocumentReference docIdRef = db.collection("attendanceRecords").document(crn + " " + date1);
         docIdRef.set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
