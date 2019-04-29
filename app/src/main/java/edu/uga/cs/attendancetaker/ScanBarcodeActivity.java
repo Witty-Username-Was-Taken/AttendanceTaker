@@ -28,6 +28,7 @@ import com.google.zxing.integration.android.IntentResult;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,6 +120,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
         Map<String, Object> docData = new HashMap<>();
 
+
         // Start code here
         docIdRef = db.collection("attendanceRecords").document(user.getDisplayName() + " " + crn);
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -126,7 +128,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
+                    if (!document.exists()) {
                         Log.d(TAG, "Document Does not exist! Looking for: " + crn);
                         docIdRef2 = db.collection("classes").document(crn);
                         docIdRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -134,14 +136,9 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot documentSnapshot = task.getResult();
-                                    Log.d(TAG, "Inside crn onComplete");
 
                                     Map<String, Object> docData = new HashMap<>();
-                                    Log.d(TAG, "Inside crn onComplete");
-
                                     docData.put("student", user.getUid());
-                                    Log.d(TAG, "Inside crn onComplete");
-
                                     docData.put("crn", crn);
 
                                     List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
@@ -176,6 +173,48 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                         Log.d(TAG, "Document Does not exist!");
                     }
 
+                    else {
+                        Log.d(TAG, "Document exists");
+
+                        docIdRef2 = db.collection("classes").document(crn);
+                        docIdRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                              @Override
+                              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                  if (task.isSuccessful()) {
+                                      DocumentSnapshot documentSnapshot = task.getResult();
+
+                                      List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
+                                      List<String> dateStrings = new ArrayList<>();
+                                      for (Timestamp d : dates) {
+                                          dateStrings.add(dateFormat.format(d.toDate()));
+                                      }
+
+                                      if (dateStrings.contains(date)) {
+                                          Log.d(TAG, "Right day!");
+                                          Map<String, Object> docData = new HashMap<>();
+                                          docData.put(date, "Present");
+                                          docIdRef.set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                              @Override
+                                              public void onSuccess(Void aVoid) {
+                                                  Log.d(TAG, "Successfully updated " + date);
+                                              }
+                                          }).addOnFailureListener(new OnFailureListener() {
+                                              @Override
+                                              public void onFailure(@NonNull Exception e) {
+                                                  Log.d(TAG, "Failed to update " + date);
+                                              }
+                                          });
+                                      }
+
+                                      else {
+                                          Log.d(TAG, "Wrong day!");
+                                      }
+                                  }
+                              }
+                          });
+
+                    }
+
 
                 }
 
@@ -185,31 +224,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
             }
         });
         // End new code here
-
-
-
-
-
-
-        docData.put("crn", crn);
-        docData.put("student", user.getUid());
-        docData.put(date, "Present");
-
-
-        DocumentReference docIdRef = db.collection("attendanceRecords").document(user.getUid()+ " " + crn);
-        docIdRef.set(docData)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
     }
 
     private void signOut() {
