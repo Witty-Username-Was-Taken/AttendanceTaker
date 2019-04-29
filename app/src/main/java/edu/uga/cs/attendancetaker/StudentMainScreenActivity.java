@@ -19,6 +19,7 @@ public class StudentMainScreenActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
+    Button scanBarcode;
     Button signOut;
 
     @Override
@@ -26,7 +27,15 @@ public class StudentMainScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_main_screen);
 
+        scanBarcode = findViewById(R.id.student_scan_barcode_button);
         signOut = findViewById(R.id.student_sign_out_button);
+
+        scanBarcode.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(StudentMainScreenActivity.this, ScanBarcodeActivity.class);
+                startActivity(intent);
+            }
+        });
 
         signOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -26,12 +26,11 @@ public class NewBarcodeActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private GoogleSignInClient mGoogleSignInClient;
 
-    private String subject;
     private String crn;
-    private String className;
 
     ImageView qrCodeImageView;
 
+    Button home;
     Button signOut;
 
     @Override
@@ -40,22 +39,27 @@ public class NewBarcodeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_barcode);
 
         qrCodeImageView = findViewById(R.id.qrCodeImageView);
+        home = findViewById(R.id.new_barcode_home_button);
         signOut = findViewById(R.id.new_barcode_sign_out_button);
 
-        subject = getIntent().getStringExtra("subject");
-        crn = getIntent().getStringExtra("crn");
-        className = getIntent().getStringExtra("className");
+        crn = getIntent().getStringExtra("selectedCrn");
 
-        String text = subject + " | " + crn + " | " + className;
         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
         try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,800,800);
+            BitMatrix bitMatrix = multiFormatWriter.encode(crn, BarcodeFormat.QR_CODE,800,800);
             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
             qrCodeImageView.setImageBitmap(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();
         }
+
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(NewBarcodeActivity.this, ProfessorMainScreenActivity.class);
+                startActivity(intent);
+            }
+        });
 
         signOut.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

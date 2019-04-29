@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="edu.uga.cs.attendancetaker">
 
     <application
@@ -9,13 +10,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme">
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,19 +28,37 @@
         <activity
             android:name=".ProfessorMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme" />
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".StudentMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme" />
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CourseInfoActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:theme="@style/HiddenTitleTheme" />
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".NewBarcodeActivity"
             android:parentActivityName=".CourseInfoActivity"
-            android:theme="@style/HiddenTitleTheme" />
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CurrentBarcodesActivity"
+            android:parentActivityName=".ProfessorMainScreenActivity"
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ScanBarcodeActivity"
+            android:parentActivityName=".StudentMainScreenActivity"
+            android:theme="@style/HiddenTitleTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
     </application>
 
 </manifest>
