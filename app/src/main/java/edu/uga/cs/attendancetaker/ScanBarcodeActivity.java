@@ -109,11 +109,11 @@ public class ScanBarcodeActivity extends AppCompatActivity {
     }
 
     private void addAttendanceRecordToDatabase(final String crn) {
-        final DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy"); // Was MM/dd/yyyy hh:mm a
-        DateFormat dateFormat1 = new SimpleDateFormat("MM-dd-yyyy");
+        final DateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy"); // Was MM/dd/yyyy hh:mm a
+        //DateFormat dateFormat1 = new SimpleDateFormat("MM-dd-yyyy");
         Date d = new Date();
         final String date = dateFormat.format(d);
-        String date1 = dateFormat1.format(d);
+        //String date1 = dateFormat1.format(d);
 
         // Access a Cloud Firestore instance from your Activity
         final FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -193,7 +193,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                           Log.d(TAG, "Right day!");
                                           Map<String, Object> docData = new HashMap<>();
                                           docData.put(date, "Present");
-                                          docIdRef.set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                          docIdRef.update(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
                                               @Override
                                               public void onSuccess(Void aVoid) {
                                                   Log.d(TAG, "Successfully updated " + date);
