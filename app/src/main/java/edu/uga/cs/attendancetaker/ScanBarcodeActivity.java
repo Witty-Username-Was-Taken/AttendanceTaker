@@ -142,14 +142,23 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                     docData.put("crn", crn);
 
                                     List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
+                                    List<String> stringDates = new ArrayList<String>();
 
                                     for (Timestamp s : dates) {
                                         Log.d(TAG, "Found date: " + s);
                                         Date newDate = s.toDate();
+                                        stringDates.add(dateFormat.format(s.toDate()));
                                         String sDate = dateFormat.format(newDate);
                                         docData.put(sDate, "Absent");
                                     }
-                                    docData.put(date, "Present");
+                                    if (stringDates.contains(date)) {
+                                        Log.d(TAG, "Today's date found!");
+                                        docData.put(date, "Present");
+                                    }
+
+                                    else {
+                                        Log.d(TAG, "Today's date not found");
+                                    }
 
                                     db.collection("attendanceRecords").document(user.getDisplayName() + " "
                                             + crn).set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
