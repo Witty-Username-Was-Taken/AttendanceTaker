@@ -14,12 +14,20 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -27,8 +35,9 @@ public class SplashScreenActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
-
+    private FirebaseUser firebaseUser;
     private GoogleSignInClient mGoogleSignInClient;
+    private DocumentReference docIdRef;
 
     SignInButton signInButton;
 
@@ -96,11 +105,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            addUserToDatabase(user);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            //Toast authentication failed
                             updateUI(null);
                         }
                     }
@@ -130,5 +139,91 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }
     }
+
+    private void addUserToDatabase(FirebaseUser user) {
+        firebaseUser = user;
+        boolean isProfessor = false;
+        String[] professor_emails = getResources().getStringArray(R.array.professor_emails);
+        if (user != null) {
+            // Access a Cloud Firestore instance from your Activity
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+            for(String email : professor_emails) {
+                if(user.getEmail().equals(email)) {
+                    isProfessor = true;
+                }
+            }
+            if(isProfessor) {
+                docIdRef = db.collection("professors").document(user.getUid());
+                docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "Document exists!");
+                            } else {
+                                Log.d(TAG, "Document does not exist!");
+                                Map<String, Object> docData = new HashMap<>();
+                                docData.put("name", firebaseUser.getDisplayName());
+                                docIdRef.set(docData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
+                    }
+                });
+
+            } else {
+                docIdRef = db.collection("students").document(user.getUid());
+                docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                Log.d(TAG, "Document exists!");
+                            } else {
+                                Log.d(TAG, "Document does not exist!");
+                                Map<String, Object> docData = new HashMap<>();
+                                docData.put("name", firebaseUser.getDisplayName());
+                                docIdRef.set(docData)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.w(TAG, "Error writing document", e);
+                                            }
+                                        });
+
+                            }
+                        } else {
+                            Log.d(TAG, "Failed with: ", task.getException());
+                        }
+                    }
+                });
+            }
+
+        }
+    }
+
 
 }
