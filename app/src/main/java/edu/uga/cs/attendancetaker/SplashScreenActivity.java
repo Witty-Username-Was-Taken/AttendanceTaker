@@ -33,6 +33,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    public static final String COLLECTION_PROFESSORS = "professors";
+    public static final String COLLECTION_STUDENTS = "students";
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -154,10 +156,10 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
             if(isProfessor) {
-                addUserToDatabase(db, "professors", user);
+                addUserToDatabase(db, COLLECTION_PROFESSORS, user);
 
             } else {
-                addUserToDatabase(db, "students", user);
+                addUserToDatabase(db, COLLECTION_STUDENTS, user);
             }
         }
     }
