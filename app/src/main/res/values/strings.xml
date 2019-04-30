@@ -9,7 +9,7 @@
     <string name="disconnect">Disconnect</string>
     <string-array name="professor_emails">
         <item>siraaj.fadoo@gmail.com</item>
-        <item>srijal.joshy@gmail.com</item>
+        <!--<item>srijal.joshy@gmail.com</item>-->
     </string-array>
     <string name="subject">Subject:</string>
     <string name="crn">CRN:</string>

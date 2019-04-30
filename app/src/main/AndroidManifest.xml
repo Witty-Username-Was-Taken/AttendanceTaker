@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CourseOptionsActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -17,8 +18,8 @@
 
         <activity
             android:name=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,33 +29,33 @@
         <activity
             android:name=".ProfessorMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".StudentMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".CourseInfoActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".NewBarcodeActivity"
             android:parentActivityName=".CourseInfoActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".CurrentBarcodesActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".ScanBarcodeActivity"
             android:parentActivityName=".StudentMainScreenActivity"
-            android:theme="@style/HiddenTitleTheme"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"

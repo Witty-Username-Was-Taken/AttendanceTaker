@@ -22,6 +22,8 @@ public class StudentMainScreenActivity extends AppCompatActivity {
     Button scanBarcode;
     Button signOut;
 
+    private Button btnViewAttendance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,7 @@ public class StudentMainScreenActivity extends AppCompatActivity {
 
         scanBarcode = findViewById(R.id.student_scan_barcode_button);
         signOut = findViewById(R.id.student_sign_out_button);
+        btnViewAttendance = findViewById(R.id.student_view_attendance_button);
 
         scanBarcode.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -70,4 +73,9 @@ public class StudentMainScreenActivity extends AppCompatActivity {
                 });
     }
 
+    public void viewAttendance(View view) {
+        Intent intent = new Intent(getApplication(), CourseOptionsActivity.class);
+        // maybe put the info about class?
+        startActivity(intent);
+    }
 }
