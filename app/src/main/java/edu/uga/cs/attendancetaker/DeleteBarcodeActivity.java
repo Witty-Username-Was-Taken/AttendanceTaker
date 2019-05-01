@@ -14,6 +14,8 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -22,10 +24,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
 import java.util.ArrayList;
 
-public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
+public class DeleteBarcodeActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
 
     private static final String TAG = "GoogleActivity";
 
@@ -44,14 +45,14 @@ public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_barcodes);
+        setContentView(R.layout.activity_delete_barcode);
 
-        home = findViewById(R.id.current_barcodes_home_button);
-        signOut = findViewById(R.id.current_barcodes_sign_out_button);
+        home = findViewById(R.id.delete_barcode_home_button);
+        signOut = findViewById(R.id.delete_barcode_sign_out_button);
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(CurrentBarcodesActivity.this, ProfessorMainScreenActivity.class);
+                Intent intent = new Intent(DeleteBarcodeActivity.this, ProfessorMainScreenActivity.class);
                 startActivity(intent);
             }
         });
@@ -85,7 +86,7 @@ public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecy
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent = new Intent(CurrentBarcodesActivity.this, SplashScreenActivity.class);
+                        Intent intent = new Intent(DeleteBarcodeActivity.this, SplashScreenActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -120,7 +121,7 @@ public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecy
     }
 
     private void setUpRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.current_barcodes_list);
+        RecyclerView recyclerView = findViewById(R.id.delete_barcode_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), crns);
         adapter.setClickListener(this);
@@ -142,10 +143,8 @@ public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecy
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        Intent intent = new Intent(CurrentBarcodesActivity.this, NewBarcodeActivity.class);
-                        intent.putExtra("subject", document.getString("subject"));
-                        intent.putExtra("selectedCrn", selectedCrn);
-                        intent.putExtra("className", document.getString("className"));
+                        deleteClass(selectedCrn);
+                        Intent intent = new Intent(DeleteBarcodeActivity.this, ProfessorMainScreenActivity.class);
                         startActivity(intent);
                     } else {
                         Log.d(TAG, "No such document");
@@ -157,5 +156,24 @@ public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecy
         });
     }
 
+    private void deleteClass(String selectedCrn) {
+        // Access a Cloud Firestore instance from your Activity
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("classes").document(selectedCrn)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+    }
 
 }

@@ -10,6 +10,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".StudentAttendanceActivity"
             android:parentActivityName=".CourseOptionsActivity"
@@ -68,6 +69,11 @@
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="fullSensor"
             tools:replace="screenOrientation" />
+        <activity
+            android:name=".DeleteBarcodeActivity"
+            android:parentActivityName=".ProfessorMainScreenActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
     </application>
 
 </manifest>
