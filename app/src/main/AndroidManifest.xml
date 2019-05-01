@@ -11,9 +11,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".CourseOptionsActivity"
+            android:name=".StudentAttendanceActivity"
+            android:parentActivityName=".CourseOptionsActivity"
             android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme"></activity>
+        <activity
+            android:name=".CourseOptionsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
 
         <meta-data
             android:name="preloaded_fonts"
