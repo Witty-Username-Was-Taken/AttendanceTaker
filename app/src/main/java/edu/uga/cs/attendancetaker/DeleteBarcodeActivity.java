@@ -98,7 +98,11 @@ public class DeleteBarcodeActivity extends AppCompatActivity implements MyRecycl
         // Access a Cloud Firestore instance from your Activity
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
         db.collection("classes")
+                .whereEqualTo("professor", mAuth.getCurrentUser().getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
