@@ -131,6 +131,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (!document.exists()) {
                         Log.d(TAG, "Document Does not exist! Looking for: " + crn);
+                        Log.d(TAG, "Document Does not exist!");
                         docIdRef2 = db.collection("classes").document(crn);
                         docIdRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -147,7 +148,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                     List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
                                     List<String> stringDates = new ArrayList<String>();
 
-                                    Map<String, Object> statusMap = new HashMap();
+                                    final Map<String, Object> statusMap = new HashMap();
                                     Map<String, Object> dateStatusMap = new HashMap<>();
 
                                     for (Timestamp s : dates) {
@@ -157,9 +158,21 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                         String sDate = dateFormat.format(newDate);
                                         docData.put(sDate, "Absent");
                                         dateStatusMap.put(sDate, "Absent");
-                                        statusMap.put("status", dateStatusMap);
-                                        docIdRef.set(statusMap, SetOptions.merge());
                                     }
+
+                                    System.err.println(">>>>>>>>>>> " + dateStatusMap);
+
+                                    statusMap.put("status", dateStatusMap);
+                                    docIdRef.set(statusMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "onComplete: Statusmap " + statusMap);
+                                                System.err.println("STATUSMAP" + statusMap);
+                                            }
+                                        }
+                                    });
+
                                     if (stringDates.contains(date)) {
                                         Log.d(TAG, "Today's date found!");
                                         docData.put(date, "Present");
@@ -189,7 +202,6 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                 }
                             }
                         });
-                        Log.d(TAG, "Document Does not exist!");
                     } else {
                         Log.d(TAG, "Document exists");
 
