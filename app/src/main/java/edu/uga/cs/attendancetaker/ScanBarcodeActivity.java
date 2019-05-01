@@ -143,6 +143,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                     docData.put("student", user.getUid());
                                     docData.put("crn", crn);
 
+//<<<<<<< Updated upstream
                                     docData.put("className", documentSnapshot.getString(CourseOptionsActivity.KEY_CLASS_NAME)); // Added by SJ
 
                                     List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
@@ -156,14 +157,13 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                         Date newDate = s.toDate();
                                         stringDates.add(dateFormat.format(s.toDate()));
                                         String sDate = dateFormat.format(newDate);
-                                        docData.put(sDate, "Absent");
+                                        //docData.put(sDate, "Absent");
                                         dateStatusMap.put(sDate, "Absent");
                                     }
 
-                                    System.err.println(">>>>>>>>>>> " + dateStatusMap);
-
-                                    statusMap.put("status", dateStatusMap);
-                                    docIdRef.set(statusMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    //statusMap.put("status", dateStatusMap);
+                                    docData.put("status", dateStatusMap);
+                                    docIdRef.set(statusMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
@@ -174,9 +174,8 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                     });
 
                                     if (stringDates.contains(date)) {
+
                                         Log.d(TAG, "Today's date found!");
-                                        docData.put(date, "Present");
-//                                        docData.put("status", statusMap);
                                         dateStatusMap.put(date, "Present");
                                         statusMap.put("status", dateStatusMap);
                                         docIdRef.set(statusMap, SetOptions.merge());
