@@ -33,6 +33,8 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    public static final String COLLECTION_PROFESSORS = "professors";
+    public static final String COLLECTION_STUDENTS = "students";
 
     private FirebaseAuth mAuth;
     private FirebaseUser firebaseUser;
@@ -154,75 +156,55 @@ public class SplashScreenActivity extends AppCompatActivity {
                 }
             }
             if(isProfessor) {
-                docIdRef = db.collection("professors").document(user.getUid());
-                docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d(TAG, "Document exists!");
-                            } else {
-                                Log.d(TAG, "Document does not exist!");
-                                Map<String, Object> docData = new HashMap<>();
-                                docData.put("name", firebaseUser.getDisplayName());
-                                docIdRef.set(docData)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error writing document", e);
-                                            }
-                                        });
-
-                            }
-                        } else {
-                            Log.d(TAG, "Failed with: ", task.getException());
-                        }
-                    }
-                });
+                addUserToDatabase(db, COLLECTION_PROFESSORS, user);
 
             } else {
-                docIdRef = db.collection("students").document(user.getUid());
-                docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document.exists()) {
-                                Log.d(TAG, "Document exists!");
-                            } else {
-                                Log.d(TAG, "Document does not exist!");
-                                Map<String, Object> docData = new HashMap<>();
-                                docData.put("name", firebaseUser.getDisplayName());
-                                docIdRef.set(docData)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error writing document", e);
-                                            }
-                                        });
-
-                            }
-                        } else {
-                            Log.d(TAG, "Failed with: ", task.getException());
-                        }
-                    }
-                });
+                addUserToDatabase(db, COLLECTION_STUDENTS, user);
             }
-
         }
+    }
+
+    /**
+     * This is the overloaded form of the single-parameter method of the same name.
+     * The behavior of adding a user to the database depends on the type of the collection
+     * passed and the type of user i.e. Professor or Student
+     * @param db
+     * @param collection
+     * @param user
+     */
+    private void addUserToDatabase(FirebaseFirestore db, String collection, FirebaseUser user) {
+        docIdRef = db.collection(collection).document(user.getUid());
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "Document exists!");
+                    } else {
+                        Log.d(TAG, "Document does not exist!");
+                        Map<String, Object> docData = new HashMap<>();
+                        docData.put("name", firebaseUser.getDisplayName());
+                        docIdRef.set(docData)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error writing document", e);
+                                    }
+                                });
+
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                }
+            }
+        });
     }
 
 
