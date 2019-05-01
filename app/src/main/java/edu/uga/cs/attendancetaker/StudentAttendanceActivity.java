@@ -18,7 +18,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,10 +100,13 @@ public class StudentAttendanceActivity extends AppCompatActivity {
                                     String formattedStatus = dateKey + "\t" + dateStatusMap.get(dateKey);
                                     datesList.add(formattedStatus);
 
-
                                 }
 
                             }
+
+                            sorByDate(datesList);
+
+                            Log.d(TAG, "onComplete: >>>> After sorting: " + datesList);
 
                             genericDataList = datesList;
                             loadRecycleriew();
@@ -107,6 +115,22 @@ public class StudentAttendanceActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+    }
+
+    private void sorByDate(List<String> datesList) {
+
+        Collections.sort(datesList, new Comparator<String>() {
+            DateFormat f = new SimpleDateFormat("MM-dd-yyyy");
+            @Override
+            public int compare(String o1, String o2) {
+                try {
+                    return f.parse(o1.split("\\s+")[0]).compareTo(f.parse(o2.split("\\s+")[0]));
+                } catch (ParseException e) {
+                    throw new IllegalArgumentException(e);
+                }
+            }
+        });
 
     }
 
