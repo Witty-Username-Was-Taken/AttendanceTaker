@@ -16,13 +16,17 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class CourseInfoActivity extends AppCompatActivity {
@@ -113,9 +117,18 @@ public class CourseInfoActivity extends AppCompatActivity {
                     } else {
                         Log.d(TAG, "Document does not exist!");
                         Map<String, Object> docData = new HashMap<>();
+
+                        // Testing adding Dates array
+                        List<String> dates = new ArrayList<String>();
+                        dates.add("04-30-19");
+                        dates.add("05-02-2019");
+
+                        // End Testing
+
                         docData.put("subject", subject);
                         docData.put("className", className);
                         docData.put("professor", firebaseUser.getUid());
+                        docData.put("Dates", dates);
                         docIdRef.set(docData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override

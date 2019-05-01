@@ -23,6 +23,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -65,7 +66,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(ScanBarcodeActivity.this, ProfessorMainScreenActivity.class);
+                Intent intent = new Intent(ScanBarcodeActivity.this, StudentMainScreenActivity.class);
                 startActivity(intent);
             }
         });
@@ -96,10 +97,10 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result =   IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this,    "Cancelled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Cancelled", Toast.LENGTH_SHORT).show();
             } else {
                 addAttendanceRecordToDatabase(result.getContents());
             }
@@ -130,6 +131,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     if (!document.exists()) {
                         Log.d(TAG, "Document Does not exist! Looking for: " + crn);
+                        Log.d(TAG, "Document Does not exist!");
                         docIdRef2 = db.collection("classes").document(crn);
                         docIdRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
@@ -141,22 +143,43 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                     docData.put("student", user.getUid());
                                     docData.put("crn", crn);
 
+//<<<<<<< Updated upstream
+                                    docData.put("className", documentSnapshot.getString(CourseOptionsActivity.KEY_CLASS_NAME)); // Added by SJ
+
                                     List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
                                     List<String> stringDates = new ArrayList<String>();
+
+                                    final Map<String, Object> statusMap = new HashMap();
+                                    Map<String, Object> dateStatusMap = new HashMap<>();
 
                                     for (Timestamp s : dates) {
                                         Log.d(TAG, "Found date: " + s);
                                         Date newDate = s.toDate();
                                         stringDates.add(dateFormat.format(s.toDate()));
                                         String sDate = dateFormat.format(newDate);
-                                        docData.put(sDate, "Absent");
-                                    }
-                                    if (stringDates.contains(date)) {
-                                        Log.d(TAG, "Today's date found!");
-                                        docData.put(date, "Present");
+                                        //docData.put(sDate, "Absent");
+                                        dateStatusMap.put(sDate, "Absent");
                                     }
 
-                                    else {
+                                    //statusMap.put("status", dateStatusMap);
+                                    docData.put("status", dateStatusMap);
+                                    docIdRef.set(statusMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Log.d(TAG, "onComplete: Statusmap " + statusMap);
+                                                System.err.println("STATUSMAP" + statusMap);
+                                            }
+                                        }
+                                    });
+
+                                    if (stringDates.contains(date)) {
+
+                                        Log.d(TAG, "Today's date found!");
+                                        dateStatusMap.put(date, "Present");
+                                        statusMap.put("status", dateStatusMap);
+                                        docIdRef.set(statusMap, SetOptions.merge());
+                                    } else {
                                         Log.d(TAG, "Today's date not found");
                                     }
 
@@ -173,61 +196,74 @@ public class ScanBarcodeActivity extends AppCompatActivity {
                                                     Log.w(TAG, "Error writing document", e);
                                                 }
                                             });
-                                }
-                                else {
+                                } else {
                                     Log.d(TAG, "Failed");
                                 }
                             }
                         });
-                        Log.d(TAG, "Document Does not exist!");
-                    }
-
-                    else {
+                    } else {
                         Log.d(TAG, "Document exists");
 
                         docIdRef2 = db.collection("classes").document(crn);
                         docIdRef2.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                              @Override
-                              public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                  if (task.isSuccessful()) {
-                                      DocumentSnapshot documentSnapshot = task.getResult();
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot documentSnapshot = task.getResult();
 
-                                      List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
-                                      List<String> dateStrings = new ArrayList<>();
-                                      for (Timestamp d : dates) {
-                                          dateStrings.add(dateFormat.format(d.toDate()));
-                                      }
+                                    List<Timestamp> dates = (List<Timestamp>) documentSnapshot.get("Dates");
+                                    List<String> dateStrings = new ArrayList<>();
+                                    for (Timestamp d : dates) {
+                                        dateStrings.add(dateFormat.format(d.toDate()));
+                                    }
 
-                                      if (dateStrings.contains(date)) {
-                                          Log.d(TAG, "Right day!");
-                                          Map<String, Object> docData = new HashMap<>();
-                                          docData.put(date, "Present");
-                                          docIdRef.update(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                              @Override
-                                              public void onSuccess(Void aVoid) {
-                                                  Log.d(TAG, "Successfully updated " + date);
-                                              }
-                                          }).addOnFailureListener(new OnFailureListener() {
-                                              @Override
-                                              public void onFailure(@NonNull Exception e) {
-                                                  Log.d(TAG, "Failed to update " + date);
-                                              }
-                                          });
-                                      }
+                                    if (dateStrings.contains(date)) {
+                                        Log.d(TAG, "Right day!");
+                                        Map<String, Object> docData = new HashMap<>();
+                                        Log.e(TAG, "onComplete: documentsnapshot " + documentSnapshot.contains(date), null);
+                                        // TODO: UPDATE status map with absents
 
-                                      else {
-                                          Log.d(TAG, "Wrong day!");
-                                      }
-                                  }
-                              }
-                          });
+
+                                        Map<String, Object> dateStatusMap = new HashMap<>();
+                                        Map<String, Object> statusMap = new HashMap<>();
+
+                                        dateStatusMap.put(date, "Present"); // Added by sj
+
+                                        statusMap.put("status", dateStatusMap);
+                                        docIdRef.set(statusMap, SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d(TAG, "onComplete: Appended map to db");
+                                                }
+                                            }
+                                        });
+
+                                        docData.put(date, "Present");
+
+
+                                        docIdRef.update(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Log.d(TAG, "Successfully updated " + date);
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, "Failed to update " + date);
+                                            }
+                                        });
+                                    } else {
+                                        Log.d(TAG, "Wrong day!");
+                                    }
+                                }
+                            }
+                        });
 
                     }
 
 
-                }
-
-                else {
+                } else {
                     Log.d(TAG, "Failed with: ", task.getException());
                 }
             }
