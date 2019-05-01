@@ -34,6 +34,7 @@ proguard/
 captures/
 
 # IntelliJ
+.idea/
 *.iml
 .idea/workspace.xml
 .idea/tasks.xml
@@ -80,7 +81,7 @@ lint/tmp/
 # lint/reports/
 
 .DS_Store
-.idea/
+./idea
 .idea/workspace.xml
 .gradle/
 *.iml
