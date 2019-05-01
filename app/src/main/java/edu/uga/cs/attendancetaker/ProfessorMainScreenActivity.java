@@ -21,6 +21,7 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
 
     Button newBarcode;
     Button currentBarcodes;
+    Button deleteBarcode;
     Button signOut;
 
     @Override
@@ -30,6 +31,7 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
 
         newBarcode = findViewById(R.id.professor_new_barcode_button);
         currentBarcodes = findViewById(R.id.professor_current_barcodes_button);
+        deleteBarcode = findViewById(R.id.professor_delete_barcode_button);
         signOut = findViewById(R.id.professor_sign_out_button);
 
         newBarcode.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +44,13 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
         currentBarcodes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(ProfessorMainScreenActivity.this, CurrentBarcodesActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        deleteBarcode.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfessorMainScreenActivity.this, DeleteBarcodeActivity.class);
                 startActivity(intent);
             }
         });

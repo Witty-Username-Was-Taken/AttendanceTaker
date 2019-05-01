@@ -58,7 +58,7 @@ public class ScanBarcodeActivity extends AppCompatActivity {
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(ScanBarcodeActivity.this, ProfessorMainScreenActivity.class);
+                Intent intent = new Intent(ScanBarcodeActivity.this, StudentMainScreenActivity.class);
                 startActivity(intent);
             }
         });
