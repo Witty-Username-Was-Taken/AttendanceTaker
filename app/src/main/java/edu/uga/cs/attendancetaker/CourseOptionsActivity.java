@@ -48,6 +48,8 @@ public class CourseOptionsActivity extends AppCompatActivity {
     List<String> genericDataList;// since we are reusing the same recyclerview
     Context context;
 
+    public static String SELECTED_CLASS;
+
     // firebase stuff
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

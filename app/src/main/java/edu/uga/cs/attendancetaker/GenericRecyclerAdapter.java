@@ -136,6 +136,7 @@ public class GenericRecyclerAdapter extends RecyclerView.Adapter<GenericRecycler
                         Log.d(TAG, "callRespectiveActivity: Before getting exception");
                         intent = new Intent(context, StudentSelectionActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        CourseOptionsActivity.SELECTED_CLASS = tvRecyclerItem.getText().toString();
                         intent.putExtra("className", tvRecyclerItem.getText().toString());
                         context.startActivity(intent);
                         break;

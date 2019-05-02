@@ -187,8 +187,9 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         final String studentUID = StudentSelectionActivity.studentUID.get(studentNameFromPreviousActivity);
         Log.e(TAG, "studentUID: " + studentUID);
 
+        Log.d(TAG, "getStudentsAttendanceProfessor: studentUID " + studentUID);
         attendanceRef.whereEqualTo("student", studentUID)
-//                .whereEqualTo("className", crnFromPreviousActivity)
+                .whereEqualTo("className", CourseOptionsActivity.SELECTED_CLASS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
