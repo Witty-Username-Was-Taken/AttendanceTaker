@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ClassListActivity extends AppCompatActivity {
-    public static final int STUDENT_ATTENDANCE_ACTIVITY_ID = 3;
+    public static final int CLASS_LIST_ACTIVITY = 3;
 
     private static final String TAG = "StudentAttendance";
     public static final String KEY_STATUS = "status";
@@ -62,15 +62,15 @@ public class ClassListActivity extends AppCompatActivity {
         crnFromPreviousActivity = intent.getStringExtra("CRN_STRING");
         Log.d(TAG, "onCreate: " + crnFromPreviousActivity);
 
-        getStudentsClasses();
+        getClasses();
     }
 
 
-    private void getStudentsClasses() {
+    private void getClasses() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
-        Log.d(TAG, "getStudentsClasses: Current user is " + currentUser.getUid());
+        //Log.d(TAG, "getStudentsClasses: Current user is " + currentUser.getUid());
 
         attendanceRef.whereEqualTo("student", currentUser.getUid())
                 .whereEqualTo("crn", crnFromPreviousActivity)
@@ -135,7 +135,7 @@ public class ClassListActivity extends AppCompatActivity {
     private void loadRecycleriew() {
         mRecyclerView = findViewById(R.id.recyclerViewAttendance);
 
-        mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, STUDENT_ATTENDANCE_ACTIVITY_ID); // -1 means don't use this activity's recycler view element's onclick
+        mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, CLASS_LIST_ACTIVITY); // -1 means don't use this activity's recycler view element's onclick
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         mLayoutManager = new LinearLayoutManager(context);

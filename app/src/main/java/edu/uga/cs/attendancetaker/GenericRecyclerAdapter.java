@@ -97,6 +97,10 @@ public class GenericRecyclerAdapter extends RecyclerView.Adapter<GenericRecycler
 
                             break;
 
+                        case ClassListActivity.CLASS_LIST_ACTIVITY: //3
+
+                            break;
+
                         default:
                             break;
                     }
