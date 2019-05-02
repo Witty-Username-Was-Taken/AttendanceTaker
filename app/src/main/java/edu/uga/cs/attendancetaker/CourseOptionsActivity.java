@@ -1,6 +1,7 @@
 package edu.uga.cs.attendancetaker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -9,8 +10,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -32,6 +38,8 @@ public class CourseOptionsActivity extends AppCompatActivity {
 
     public static final int COURSE_OPTIONS_ACTIVITY_ID = 1;
 
+    private static final int VERTICAL_ITEM_SPACE = 35;
+
     private static final String TAG = "CourseOptionsActivity";
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -43,6 +51,7 @@ public class CourseOptionsActivity extends AppCompatActivity {
     // firebase stuff
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private GoogleSignInClient mGoogleSignInClient;
     private CollectionReference attendanceRef = db.collection("attendanceRecords");
     public static final String KEY_CRN = "crn";
     public static final String KEY_CLASS_NAME = "className";
@@ -50,10 +59,29 @@ public class CourseOptionsActivity extends AppCompatActivity {
 
     List<String> classList = new ArrayList<>();
 
+    Button home;
+    Button signOut;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_course_options);
+
+        home = findViewById(R.id.course_options_home_button);
+        signOut = findViewById(R.id.course_options_sign_out_button);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(CourseOptionsActivity.this, StudentMainScreenActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                signOut();
+            }
+        });
 
         // 1. get data from the database and populate an Arraylist
         // 2. populate the arraylist data into the reyclerview
@@ -62,10 +90,23 @@ public class CourseOptionsActivity extends AppCompatActivity {
         getStudentsClasses();
 
 //        loadRecycleriew();
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
     }
 
     private void loadRecycleriew() {
         mRecyclerView = findViewById(R.id.recyclerView);
+
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
 
         mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, COURSE_OPTIONS_ACTIVITY_ID);
         mRecyclerView.setAdapter(mRecyclerAdapter);
@@ -104,6 +145,21 @@ public class CourseOptionsActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(CourseOptionsActivity.this, SplashScreenActivity.class);
+                        startActivity(intent);
+                    }
+                });
     }
 
 }

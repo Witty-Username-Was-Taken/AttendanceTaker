@@ -19,4 +19,5 @@
     <string name="add_new_barcode">Add New Barcode</string>
     <string name="home">Home</string>
     <string name="delete_barcode">Delete Barcode</string>
+    <string name="course_xyz">Course xyz</string>
 </resources>
