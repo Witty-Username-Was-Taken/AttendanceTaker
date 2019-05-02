@@ -74,7 +74,12 @@ public class CourseOptionsActivity extends AppCompatActivity {
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(CourseOptionsActivity.this, StudentMainScreenActivity.class);
+                Intent intent;
+                if(checkProfessor()) {
+                    intent = new Intent(CourseOptionsActivity.this, ProfessorMainScreenActivity.class);
+                } else {
+                    intent = new Intent(CourseOptionsActivity.this, StudentMainScreenActivity.class);
+                }
                 startActivity(intent);
             }
         });
@@ -198,6 +203,19 @@ public class CourseOptionsActivity extends AppCompatActivity {
                         startActivity(intent);
                     }
                 });
+    }
+
+    private boolean checkProfessor() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        boolean isProfessor = false;
+        String[] professor_emails = getResources().getStringArray(R.array.professor_emails);
+        for(String email : professor_emails) {
+            if(user.getEmail().equals(email)) {
+                isProfessor = true;
+                return isProfessor;
+            }
+        }
+        return isProfessor;
     }
 
 }

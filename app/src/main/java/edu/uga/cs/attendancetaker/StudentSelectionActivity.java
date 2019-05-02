@@ -77,7 +77,7 @@ public class StudentSelectionActivity extends AppCompatActivity {
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(StudentSelectionActivity.this, StudentMainScreenActivity.class);
+                Intent intent = new Intent(StudentSelectionActivity.this, ProfessorMainScreenActivity.class);
                 startActivity(intent);
             }
         });

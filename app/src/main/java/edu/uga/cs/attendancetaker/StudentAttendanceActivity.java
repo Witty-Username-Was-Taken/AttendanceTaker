@@ -78,7 +78,12 @@ public class StudentAttendanceActivity extends AppCompatActivity {
 
         home.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(StudentAttendanceActivity.this, StudentMainScreenActivity.class);
+                Intent intent;
+                if(checkProfessor()) {
+                     intent = new Intent(StudentAttendanceActivity.this, ProfessorMainScreenActivity.class);
+                } else {
+                     intent = new Intent(StudentAttendanceActivity.this, StudentMainScreenActivity.class);
+                }
                 startActivity(intent);
             }
         });
