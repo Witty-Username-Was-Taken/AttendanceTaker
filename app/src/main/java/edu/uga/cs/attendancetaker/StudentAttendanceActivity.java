@@ -46,6 +46,7 @@ public class StudentAttendanceActivity extends AppCompatActivity {
     Context context;
     String crnFromPreviousActivity;
 
+    String studentNameFromPreviousActivity;
 
     // firebase stuff
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -61,12 +62,30 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         setContentView(R.layout.activity_student_attendance);
 
         Intent intent = getIntent();
-        crnFromPreviousActivity = intent.getStringExtra("CRN_STRING");
-        Log.d(TAG, "onCreate: " + crnFromPreviousActivity);
-
-        getStudentsClasses();
+        if (checkProfessor() != true) {
+            crnFromPreviousActivity = intent.getStringExtra("CRN_STRING");
+            Log.d(TAG, "onCreate: " + crnFromPreviousActivity);
+            getStudentsClasses();
+        } else if (checkProfessor() == true) {
+            studentNameFromPreviousActivity = intent.getStringExtra("STUDENT_NAME");
+            Log.d(TAG, "onCreate: STUDENT NAME " + studentNameFromPreviousActivity);
+            getStudentsAttendanceProfessor();
+        }
     }
 
+
+    private boolean checkProfessor() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        boolean isProfessor = false;
+        String[] professor_emails = getResources().getStringArray(R.array.professor_emails);
+        for(String email : professor_emails) {
+            if(user.getEmail().equals(email)) {
+                isProfessor = true;
+                return isProfessor;
+            }
+        }
+        return isProfessor;
+    }
 
     private void getStudentsClasses() {
 
@@ -76,6 +95,54 @@ public class StudentAttendanceActivity extends AppCompatActivity {
 
         attendanceRef.whereEqualTo("student", currentUser.getUid())
                 .whereEqualTo("crn", crnFromPreviousActivity)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            Map<String, Object> dataMap;
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                // Add both, the date and present/absent status
+
+                                dataMap = document.getData();
+
+                                Log.e(TAG, "onComplete: datamap " + dataMap.get(KEY_STATUS), null);
+
+
+                                HashMap<String, String> dateStatusMap = (HashMap<String, String>) dataMap.get(KEY_STATUS); // get the map of {date: Present/Absent}
+                                Log.e(TAG, "onComplete: datestatusmap " + dateStatusMap, null);
+
+                                for (String dateKey : dateStatusMap.keySet()) {
+                                    // Add data to make sure that the dates displayed don't exceed the current timestamp
+                                    // if date < currentTimestamp then add to list
+                                    String formattedStatus = dateKey + "\t" + dateStatusMap.get(dateKey);
+                                    datesList.add(formattedStatus);
+
+                                }
+
+                            }
+
+                            sorByDate(datesList);
+
+                            Log.d(TAG, "onComplete: >>>> After sorting: " + datesList);
+
+                            genericDataList = datesList;
+                            loadRecycleriew();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    private void getStudentsAttendanceProfessor() {
+
+        String studentUID = StudentSelectionActivity.studentUID.get(studentNameFromPreviousActivity);
+
+        attendanceRef.whereEqualTo("student", studentUID)
+//                .whereEqualTo("className", crnFromPreviousActivity)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -143,4 +210,5 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
     }
+
 }
