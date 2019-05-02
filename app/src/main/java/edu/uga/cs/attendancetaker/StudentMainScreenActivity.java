@@ -76,6 +76,7 @@ public class StudentMainScreenActivity extends AppCompatActivity {
     public void viewAttendance(View view) {
         Intent intent = new Intent(getApplication(), CourseOptionsActivity.class);
         // maybe put the info about class?
+        intent.putExtra("from", "studentActivity");
         startActivity(intent);
     }
 }

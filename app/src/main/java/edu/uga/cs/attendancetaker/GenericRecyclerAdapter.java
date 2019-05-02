@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -54,11 +57,24 @@ public class GenericRecyclerAdapter extends RecyclerView.Adapter<GenericRecycler
         TextView tvRecyclerItem; // can be course or student or attendance
         private final Context context;
 
+
+        private boolean checkProfessor() {
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            boolean isProfessor = false;
+            String[] professor_emails = context.getResources().getStringArray(R.array.professor_emails);
+            for (String email : professor_emails) {
+                if (user.getEmail().equals(email)) {
+                    isProfessor = true;
+                    return isProfessor;
+                }
+            }
+            return isProfessor;
+        }
+
         public GenericViewHolder(@NonNull View itemView) {
             super(itemView);
             context = itemView.getContext();
             tvRecyclerItem = itemView.findViewById(R.id.tvRecyclerItem);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -82,27 +98,66 @@ public class GenericRecyclerAdapter extends RecyclerView.Adapter<GenericRecycler
                     }
                     Log.e(TAG, "onClick: Context.getClass(): " + context.getClass(), null);
 
-                    Intent intent = new Intent(context, StudentAttendanceActivity.class); //default, just for testing. might remove later
-                    switch (whichActivity) {
-
-                        case CourseOptionsActivity.COURSE_OPTIONS_ACTIVITY_ID: // 1
-                            intent = new Intent(context, StudentAttendanceActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            intent.putExtra("CRN_STRING", tvRecyclerItem.getText().toString().split("\\s+")[0]);
-                            context.startActivity(intent);
-                            break;
-
-                        case StudentAttendanceActivity.STUDENT_ATTENDANCE_ACTIVITY_ID:
-                            Log.e(TAG, "onClick: Clicked recyclerview " + tvRecyclerItem.getText().toString(), null);
-
-                            break;
-
-                        default:
-                            break;
-                    }
+                    callRespectiveActivity();
 
                 }
             });
+        }
+
+        private void callRespectiveActivity() {
+
+            if (checkProfessor() != true) { // student
+                Intent intent = new Intent(context, StudentAttendanceActivity.class); //default, just for testing. might remove later
+                switch (whichActivity) {
+
+                    case CourseOptionsActivity.COURSE_OPTIONS_ACTIVITY_ID: // 1
+                        intent = new Intent(context, StudentAttendanceActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("CRN_STRING", tvRecyclerItem.getText().toString().split("\\s+")[0]);
+                        context.startActivity(intent);
+                        break;
+
+                    case StudentAttendanceActivity.STUDENT_ATTENDANCE_ACTIVITY_ID:
+                        Log.e(TAG, "onClick: Clicked recyclerview " + tvRecyclerItem.getText().toString(), null);
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+            } else if (checkProfessor() == true) {
+
+                Log.d(TAG, "onClick: checkProfessor() == true");
+                Intent intent = new Intent(context, StudentAttendanceActivity.class); //default, just for testing. might remove later
+                switch (whichActivity) {
+
+                    case CourseOptionsActivity.COURSE_OPTIONS_ACTIVITY_ID: // 1
+                        Log.d(TAG, "callRespectiveActivity: Before getting exception");
+                        intent = new Intent(context, StudentSelectionActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("className", tvRecyclerItem.getText().toString());
+                        context.startActivity(intent);
+                        break;
+
+                    case StudentAttendanceActivity.STUDENT_ATTENDANCE_ACTIVITY_ID: //2
+                        Log.e(TAG, "onClick: Clicked recyclerview " + tvRecyclerItem.getText().toString(), null);
+
+                        break;
+
+                    case StudentSelectionActivity.STUDENT_SELECTION_ACTIVITY_ID: // 3
+                        Log.d(TAG, "callRespectiveActivity: Going to attendance activity");
+                        intent = new Intent(context, StudentAttendanceActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("STUDENT_NAME", tvRecyclerItem.getText().toString());
+                        context.startActivity(intent);
+                        break;
+
+                    default:
+                        break;
+                }
+
+            }
         }
 
     }

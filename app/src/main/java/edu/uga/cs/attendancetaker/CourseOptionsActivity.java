@@ -1,6 +1,7 @@
 package edu.uga.cs.attendancetaker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -47,6 +48,8 @@ public class CourseOptionsActivity extends AppCompatActivity {
     public static final String KEY_CRN = "crn";
     public static final String KEY_CLASS_NAME = "className";
 
+    private CollectionReference classesRef = db.collection("classes");
+
 
     List<String> classList = new ArrayList<>();
 
@@ -59,9 +62,14 @@ public class CourseOptionsActivity extends AppCompatActivity {
         // 2. populate the arraylist data into the reyclerview
         context = getApplicationContext();
 
-        getStudentsClasses();
+        Intent intent = getIntent();
 
-//        loadRecycleriew();
+        if (intent.getStringExtra("from").equalsIgnoreCase("studentActivity")) {
+            getStudentsClasses();
+        } else if (intent.getStringExtra("from").equalsIgnoreCase("professorActivity")){
+            getProfessorsClasses();
+        }
+
     }
 
     private void loadRecycleriew() {
@@ -98,6 +106,37 @@ public class CourseOptionsActivity extends AppCompatActivity {
 
                             genericDataList = classList;
                             loadRecycleriew();
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+    private void getProfessorsClasses() {
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        Log.d(TAG, "getStudentsClasses: Current user is " + currentUser.getUid());
+
+        classesRef.whereEqualTo("professor", currentUser.getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                                String className = document.getString(KEY_CLASS_NAME);
+                                classList.add(className);
+
+                            }
+
+                            Log.d(TAG, "onComplete: Received professor's classes: " + classList);
+                            genericDataList = classList;
+                            loadRecycleriew();
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

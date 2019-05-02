@@ -24,6 +24,8 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
     Button deleteBarcode;
     Button signOut;
 
+    Button btnViewAttendance;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +35,7 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
         currentBarcodes = findViewById(R.id.professor_current_barcodes_button);
         deleteBarcode = findViewById(R.id.professor_delete_barcode_button);
         signOut = findViewById(R.id.professor_sign_out_button);
+        btnViewAttendance = findViewById(R.id.professor_view_attendance_button);
 
         newBarcode.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -48,9 +51,11 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
             }
         });
 
-        deleteBarcode.setOnClickListener(new View.OnClickListener() {
+
+        btnViewAttendance.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(ProfessorMainScreenActivity.this, DeleteBarcodeActivity.class);
+                Intent intent = new Intent(ProfessorMainScreenActivity.this, CourseOptionsActivity.class);
+                intent.putExtra("from", "professorActivity");
                 startActivity(intent);
             }
         });
