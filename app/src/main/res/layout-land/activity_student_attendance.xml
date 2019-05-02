@@ -2,48 +2,47 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/linearLayout"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#BA0C2F"
-    tools:context=".CourseOptionsActivity">
+    tools:context=".StudentAttendanceActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerViewAttendance"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginBottom="8dp"
-        android:padding="4dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
+        android:padding="8dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/course_options_sign_out_button"
+        app:layout_constraintBottom_toTopOf="@+id/student_attendance_sign_out_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65999997" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/course_options_sign_out_button"
+        android:id="@+id/student_attendance_sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/course_options_home_button"
+        app:layout_constraintEnd_toStartOf="@+id/student_attendance_home_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewAttendance" />
 
     <Button
-        android:id="@+id/course_options_home_button"
+        android:id="@+id/student_attendance_home_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/home"
-        app:layout_constraintBottom_toBottomOf="@+id/course_options_sign_out_button"
+        app:layout_constraintBottom_toBottomOf="@+id/student_attendance_sign_out_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/course_options_sign_out_button"
-        app:layout_constraintTop_toTopOf="@+id/course_options_sign_out_button" />
+        app:layout_constraintStart_toEndOf="@+id/student_attendance_sign_out_button"
+        app:layout_constraintTop_toTopOf="@+id/student_attendance_sign_out_button" />
 
 </android.support.constraint.ConstraintLayout>

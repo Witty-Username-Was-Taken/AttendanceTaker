@@ -122,6 +122,7 @@ public class DeleteBarcodeActivity extends AppCompatActivity implements MyRecycl
 
     private void setUpRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.delete_barcode_list);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), crns);
         adapter.setClickListener(this);

@@ -120,6 +120,8 @@ public class CourseOptionsActivity extends AppCompatActivity {
 
         mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
 
+        mRecyclerView.setHasFixedSize(true);
+
         mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, COURSE_OPTIONS_ACTIVITY_ID);
         mRecyclerView.setAdapter(mRecyclerAdapter);
 

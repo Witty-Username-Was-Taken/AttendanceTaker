@@ -10,28 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".StudentSelectionActivity"
-            android:parentActivityName=".CourseOptionsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/HiddenTitleTheme"></activity>
-        <activity
-            android:name=".StudentAttendanceActivity"
-            android:parentActivityName=".CourseOptionsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/HiddenTitleTheme" />
-        <activity
-            android:name=".CourseOptionsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/HiddenTitleTheme" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".SplashScreenActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -42,32 +26,26 @@
         <activity
             android:name=".ProfessorMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".StudentMainScreenActivity"
             android:parentActivityName=".SplashScreenActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".CourseInfoActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".NewBarcodeActivity"
             android:parentActivityName=".CourseInfoActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".CurrentBarcodesActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name=".ScanBarcodeActivity"
             android:parentActivityName=".StudentMainScreenActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/HiddenTitleTheme" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
@@ -76,7 +54,16 @@
         <activity
             android:name=".DeleteBarcodeActivity"
             android:parentActivityName=".ProfessorMainScreenActivity"
-            android:screenOrientation="portrait"
+            android:theme="@style/HiddenTitleTheme" />
+        <activity android:name=".StudentSelectionActivity"
+            android:parentActivityName=".CourseOptionsActivity"
+            android:theme="@style/HiddenTitleTheme"></activity>
+        <activity
+            android:name=".StudentAttendanceActivity"
+            android:parentActivityName=".CourseOptionsActivity"
+            android:theme="@style/HiddenTitleTheme" />
+        <activity
+            android:name=".CourseOptionsActivity"
             android:theme="@style/HiddenTitleTheme" />
     </application>
 

@@ -152,6 +152,10 @@ public class StudentSelectionActivity extends AppCompatActivity {
     private void loadRecycleriew() {
         mRecyclerView = findViewById(R.id.recyclerViewStudentSelection);
 
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
+
+        mRecyclerView.setHasFixedSize(true);
+
         mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, STUDENT_SELECTION_ACTIVITY_ID); // -1 means don't use this activity's recycler view element's onclick
         mRecyclerView.setAdapter(mRecyclerAdapter);
 

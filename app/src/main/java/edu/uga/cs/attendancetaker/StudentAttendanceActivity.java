@@ -252,6 +252,8 @@ public class StudentAttendanceActivity extends AppCompatActivity {
 
         mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
 
+        mRecyclerView.setHasFixedSize(true);
+
         mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, STUDENT_ATTENDANCE_ACTIVITY_ID); // -1 means don't use this activity's recycler view element's onclick
         mRecyclerView.setAdapter(mRecyclerAdapter);
 

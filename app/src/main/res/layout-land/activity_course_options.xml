@@ -11,15 +11,15 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="30dp"
         android:padding="4dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/course_options_sign_out_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65999997" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/course_options_sign_out_button"
@@ -32,8 +32,7 @@
         app:layout_constraintEnd_toStartOf="@+id/course_options_home_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.78" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
 
     <Button
         android:id="@+id/course_options_home_button"
