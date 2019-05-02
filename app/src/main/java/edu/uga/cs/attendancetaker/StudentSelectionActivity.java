@@ -8,7 +8,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +39,9 @@ import java.util.Map;
 public class StudentSelectionActivity extends AppCompatActivity {
 
     public static final int STUDENT_SELECTION_ACTIVITY_ID = 3;
+
+    private static final int VERTICAL_ITEM_SPACE = 35;
+
     private static final String TAG = "StudentSelection";
     public static final String KEY_STATUS = "status";
 
@@ -50,9 +58,13 @@ public class StudentSelectionActivity extends AppCompatActivity {
     // firebase stuff
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private GoogleSignInClient mGoogleSignInClient;
     private CollectionReference attendanceRef = db.collection("attendanceRecords");
     public static final String KEY_CRN = "crn";
     public static final String KEY_CLASS_NAME = "className";
+
+    Button home;
+    Button signOut;
 
 
     @Override
@@ -60,10 +72,37 @@ public class StudentSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_selection);
 
+        home = findViewById(R.id.student_selection_home_button);
+        signOut = findViewById(R.id.student_selection_sign_out_button);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(StudentSelectionActivity.this, StudentMainScreenActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                signOut();
+            }
+        });
+
         Intent intent = getIntent();
         String classNameFromPreviousActivity = intent.getStringExtra("className");
 
         getStudentsOfSelectedClass(classNameFromPreviousActivity);
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -133,6 +172,21 @@ public class StudentSelectionActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(StudentSelectionActivity.this, SplashScreenActivity.class);
+                        startActivity(intent);
+                    }
+                });
     }
 
 

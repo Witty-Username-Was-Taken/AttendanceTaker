@@ -51,6 +51,13 @@ public class ProfessorMainScreenActivity extends AppCompatActivity {
             }
         });
 
+        deleteBarcode.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfessorMainScreenActivity.this, DeleteBarcodeActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         btnViewAttendance.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

@@ -9,8 +9,6 @@
     <string name="disconnect">Disconnect</string>
     <string-array name="professor_emails">
         <item>siraaj.fadoo@gmail.com</item>
-        <item>srijal.joshy@gmail.com</item>
-        <item>tripp.guinn30@gmail.com</item>
     </string-array>
     <string name="subject">Subject:</string>
     <string name="crn">CRN:</string>
@@ -21,4 +19,5 @@
     <string name="add_new_barcode">Add New Barcode</string>
     <string name="home">Home</string>
     <string name="delete_barcode">Delete Barcode</string>
+    <string name="course_xyz">Course xyz</string>
 </resources>
