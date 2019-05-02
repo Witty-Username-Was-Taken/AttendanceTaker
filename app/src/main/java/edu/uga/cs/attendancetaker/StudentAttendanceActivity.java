@@ -139,7 +139,8 @@ public class StudentAttendanceActivity extends AppCompatActivity {
 
     private void getStudentsAttendanceProfessor() {
 
-        String studentUID = StudentSelectionActivity.studentUID.get(studentNameFromPreviousActivity);
+        final String studentUID = StudentSelectionActivity.studentUID.get(studentNameFromPreviousActivity);
+        Log.e(TAG, "studentUID: " + studentUID);
 
         attendanceRef.whereEqualTo("student", studentUID)
 //                .whereEqualTo("className", crnFromPreviousActivity)
@@ -156,7 +157,7 @@ public class StudentAttendanceActivity extends AppCompatActivity {
                                 dataMap = document.getData();
 
                                 Log.e(TAG, "onComplete: datamap " + dataMap.get(KEY_STATUS), null);
-
+                                Log.e(TAG, "studentUID: " + studentUID);
 
                                 HashMap<String, String> dateStatusMap = (HashMap<String, String>) dataMap.get(KEY_STATUS); // get the map of {date: Present/Absent}
                                 Log.e(TAG, "onComplete: datestatusmap " + dateStatusMap, null);

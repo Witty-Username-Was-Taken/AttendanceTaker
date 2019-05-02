@@ -119,16 +119,16 @@ public class CourseInfoActivity extends AppCompatActivity {
                         Map<String, Object> docData = new HashMap<>();
 
                         // Testing adding Dates array
-                        List<String> dates = new ArrayList<String>();
+                        /*List<String> dates = new ArrayList<String>();
                         dates.add("04-30-19");
-                        dates.add("05-02-2019");
+                        dates.add("05-02-2019");*/
 
                         // End Testing
 
                         docData.put("subject", subject);
                         docData.put("className", className);
                         docData.put("professor", firebaseUser.getUid());
-                        docData.put("Dates", dates);
+                        //docData.put("Dates", dates);
                         docIdRef.set(docData)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
