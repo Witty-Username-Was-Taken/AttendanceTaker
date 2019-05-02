@@ -8,7 +8,12 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +38,9 @@ public class StudentAttendanceActivity extends AppCompatActivity {
 
     public static final int STUDENT_ATTENDANCE_ACTIVITY_ID = 2;
 
+    private static final int VERTICAL_ITEM_SPACE = 35;
+
+
     private static final String TAG = "StudentAttendance";
     public static final String KEY_STATUS = "status";
 
@@ -51,15 +59,40 @@ public class StudentAttendanceActivity extends AppCompatActivity {
     // firebase stuff
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private GoogleSignInClient mGoogleSignInClient;
     private CollectionReference attendanceRef = db.collection("attendanceRecords");
     public static final String KEY_CRN = "crn";
     public static final String KEY_CLASS_NAME = "className";
+
+    Button home;
+    Button signOut;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_attendance);
+
+        home = findViewById(R.id.student_attendance_home_button);
+        signOut = findViewById(R.id.student_attendance_sign_out_button);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent;
+                if(checkProfessor()) {
+                     intent = new Intent(StudentAttendanceActivity.this, ProfessorMainScreenActivity.class);
+                } else {
+                     intent = new Intent(StudentAttendanceActivity.this, StudentMainScreenActivity.class);
+                }
+                startActivity(intent);
+            }
+        });
+
+        signOut.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                signOut();
+            }
+        });
 
         Intent intent = getIntent();
         if (checkProfessor() != true) {
@@ -71,6 +104,18 @@ public class StudentAttendanceActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate: STUDENT NAME " + studentNameFromPreviousActivity);
             getStudentsAttendanceProfessor();
         }
+
+        // Configure Google Sign In
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+
     }
 
 
@@ -142,8 +187,9 @@ public class StudentAttendanceActivity extends AppCompatActivity {
         final String studentUID = StudentSelectionActivity.studentUID.get(studentNameFromPreviousActivity);
         Log.e(TAG, "studentUID: " + studentUID);
 
+        Log.d(TAG, "getStudentsAttendanceProfessor: studentUID " + studentUID);
         attendanceRef.whereEqualTo("student", studentUID)
-//                .whereEqualTo("className", crnFromPreviousActivity)
+                .whereEqualTo("className", CourseOptionsActivity.SELECTED_CLASS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -205,11 +251,30 @@ public class StudentAttendanceActivity extends AppCompatActivity {
     private void loadRecycleriew() {
         mRecyclerView = findViewById(R.id.recyclerViewAttendance);
 
+        mRecyclerView.addItemDecoration(new VerticalSpaceItemDecoration(VERTICAL_ITEM_SPACE));
+
+        mRecyclerView.setHasFixedSize(true);
+
         mRecyclerAdapter = new GenericRecyclerAdapter(getApplicationContext(), genericDataList, STUDENT_ATTENDANCE_ACTIVITY_ID); // -1 means don't use this activity's recycler view element's onclick
         mRecyclerView.setAdapter(mRecyclerAdapter);
 
         mLayoutManager = new LinearLayoutManager(context);
         mRecyclerView.setLayoutManager(mLayoutManager);
+    }
+
+    private void signOut() {
+        // Firebase sign out
+        mAuth.signOut();
+
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent = new Intent(StudentAttendanceActivity.this, SplashScreenActivity.class);
+                        startActivity(intent);
+                    }
+                });
     }
 
 }

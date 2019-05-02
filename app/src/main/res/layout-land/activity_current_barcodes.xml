@@ -5,47 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#BA0C2F"
-    tools:context=".DeleteBarcodeActivity">
+    tools:context=".CurrentBarcodesActivity">
 
     <Button
-        android:id="@+id/delete_barcode_sign_out_button"
+        android:id="@+id/current_barcodes_sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="551dp"
+        android:layout_marginBottom="112dp"
         android:text="@string/sign_out"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/delete_barcode_home_button"
+        app:layout_constraintEnd_toStartOf="@+id/current_barcodes_home_button"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.85" />
+        app:layout_constraintVertical_bias="0.8" />
 
     <Button
-        android:id="@+id/delete_barcode_home_button"
+        android:id="@+id/current_barcodes_home_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/home"
-        app:layout_constraintBottom_toBottomOf="@+id/delete_barcode_sign_out_button"
+        app:layout_constraintBottom_toBottomOf="@+id/current_barcodes_sign_out_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/delete_barcode_sign_out_button"
-        app:layout_constraintTop_toTopOf="@+id/delete_barcode_sign_out_button" />
+        app:layout_constraintStart_toEndOf="@+id/current_barcodes_sign_out_button"
+        app:layout_constraintTop_toTopOf="@+id/current_barcodes_sign_out_button" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/delete_barcode_list"
+        android:id="@+id/current_barcodes_list"
         android:layout_width="wrap_content"
         android:layout_height="200dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/delete_barcode_sign_out_button"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/current_barcodes_sign_out_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65999997" />
-
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

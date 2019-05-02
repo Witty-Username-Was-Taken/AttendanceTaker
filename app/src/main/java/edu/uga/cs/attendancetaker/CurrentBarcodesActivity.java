@@ -121,6 +121,7 @@ public class CurrentBarcodesActivity extends AppCompatActivity implements MyRecy
 
     private void setUpRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.current_barcodes_list);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         adapter = new MyRecyclerViewAdapter(getApplicationContext(), crns);
         adapter.setClickListener(this);
